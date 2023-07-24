@@ -32,6 +32,10 @@ export default function App() {
     closeImageModal,
     selectImage,
     selectedImage,
+    moveToNextImage,
+    moveToPreviousImage,
+    showNextArrow,
+    showPreviousArrow,
   } = useGallery();
 
   const onPressOpenGallery = () => {
@@ -85,6 +89,14 @@ export default function App() {
     closeImageModal();
   };
 
+  const onPressLeftArrow = () => {
+    moveToPreviousImage();
+  };
+
+  const onPressRightArrow = () => {
+    moveToNextImage();
+  };
+
   const renderItem = ({ item: image, index }) => {
     const { id, uri } = image;
     if (id === -1) {
@@ -124,7 +136,15 @@ export default function App() {
           onSubmitEditing={onSubmitEditing}
           onPressBackDrop={onPressTextInputModalBackDrop}
         />
-        <ImageModal imageModalVisible={imageModalVisible} onPressBackDrop={onPressImageModalBackDrop} selectedImage={selectedImage} />
+        <ImageModal
+          imageModalVisible={imageModalVisible}
+          onPressBackDrop={onPressImageModalBackDrop}
+          selectedImage={selectedImage}
+          onPressLeftArrow={onPressLeftArrow}
+          onPressRightArrow={onPressRightArrow}
+          showNextArrow={showNextArrow}
+          showPreviousArrow={showPreviousArrow}
+        />
         <FlatList data={imageWithAddButton} renderItem={renderItem} numColumns={3} style={{ zIndex: -1 }} />
       </SafeAreaView>
     </SafeAreaProvider>
