@@ -1,10 +1,16 @@
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultAlbum = {
   id: 1,
   title: "기본",
+};
+
+const ASYNC_KEY = {
+  image: "IMAGES_KEY",
+  album: "ALBUM_KEY",
 };
 
 export const useGallery = () => {
@@ -16,6 +22,36 @@ export const useGallery = () => {
   const [albumTitle, setAlbumTitle] = useState("");
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const _setImages = (newImages) => {
+    setImages(newImages);
+    AsyncStorage.setItem(ASYNC_KEY.image, JSON.stringify(newImages));
+  };
+
+  const _setAlbums = (newAlbums) => {
+    setAlbums(newAlbums);
+    AsyncStorage.setItem(ASYNC_KEY.album, JSON.stringify(newAlbums));
+  };
+
+  useEffect(() => {
+    initValues();
+  }, []);
+
+  const initValues = async () => {
+    const imagesFromStorage = await AsyncStorage.getItem(ASYNC_KEY.image);
+
+    if (imagesFromStorage) {
+      const parsed = JSON.parse(imagesFromStorage);
+      setImages(parsed);
+    }
+
+    const albumsFromStorage = await AsyncStorage.getItem(ASYNC_KEY.album);
+
+    if (albumsFromStorage) {
+      const parsed = JSON.parse(albumsFromStorage);
+      setAlbums(parsed);
+    }
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -32,7 +68,7 @@ export const useGallery = () => {
         uri: result.assets[0].uri,
         albumId: selectedAlbum.id,
       };
-      setImages([...images, newImage]);
+      _setImages([...images, newImage]);
     }
   };
 
@@ -47,7 +83,7 @@ export const useGallery = () => {
         onPress: () => {
           const newImage = images.filter((image) => image.id !== imageId);
 
-          setImages(newImage);
+          _setImages(newImage);
         },
       },
     ]);
@@ -69,7 +105,7 @@ export const useGallery = () => {
       title: albumTitle,
     };
 
-    setAlbums([...albums, newAlbum]);
+    _setAlbums([...albums, newAlbum]);
     setSelectedAlbum(newAlbum);
   };
 
@@ -93,7 +129,7 @@ export const useGallery = () => {
         onPress: () => {
           const newAlbums = albums.filter((album) => album.id !== albumId);
 
-          setAlbums(newAlbums);
+          _setAlbums(newAlbums);
           setSelectedAlbum(defaultAlbum);
           closeDropDown();
         },
