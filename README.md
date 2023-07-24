@@ -12,6 +12,8 @@ Addtional if you long press from image or album, you can deleting it.
 
 ## Result
 
-![Reult](https://github.com/Yuhyeon0516/ReactNative-MyGallery/assets/120432007/8775a1c2-0a0d-4c9c-92b7-fdbedb413657)
+![Result](https://github.com/Yuhyeon0516/ReactNative-MyGallery/assets/120432007/a385fd5d-2925-4965-9d22-510030bf8969)
+
+
 
 
