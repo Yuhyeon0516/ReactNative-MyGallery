@@ -4,7 +4,7 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 
 const headerHeight = 50;
 
-const MyDropDownPicker = ({ isDropDownOpen, onPressAddAlbum, onPressHeader, albums, onPressAlbum, selectedAlbum }) => {
+const MyDropDownPicker = ({ isDropDownOpen, onPressAddAlbum, onPressHeader, albums, onPressAlbum, selectedAlbum, onLongPressAlbum }) => {
   return (
     <View>
       <TouchableOpacity
@@ -13,7 +13,7 @@ const MyDropDownPicker = ({ isDropDownOpen, onPressAddAlbum, onPressHeader, albu
         style={{ height: headerHeight, justifyContent: "center", alignItems: "center", flexDirection: "row" }}
       >
         <Text style={{ fontWeight: "bold" }}>{selectedAlbum.title}</Text>
-        <SimpleLineIcons name={isDropDownOpen ? "arrow-down" : "arrow-up"} size={12} color="black" style={{ marginLeft: 8 }} />
+        <SimpleLineIcons name={isDropDownOpen ? "arrow-up" : "arrow-down"} size={12} color="black" style={{ marginLeft: 8 }} />
         <TouchableOpacity
           onPress={onPressAddAlbum}
           style={{ position: "absolute", right: 0, height: headerHeight, justifyContent: "center", alignItems: "center", paddingHorizontal: 10 }}
@@ -38,8 +38,10 @@ const MyDropDownPicker = ({ isDropDownOpen, onPressAddAlbum, onPressHeader, albu
             return (
               <TouchableOpacity
                 key={`album-${index}`}
+                activeOpacity={1}
                 style={{ paddingVertical: 12, width: "100%", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF" }}
                 onPress={() => onPressAlbum(album)}
+                onLongPress={() => onLongPressAlbum(album.id)}
               >
                 <Text style={{ fontWeight: isSelectedAlbum ? "bold" : "normal" }}>{album.title}</Text>
               </TouchableOpacity>

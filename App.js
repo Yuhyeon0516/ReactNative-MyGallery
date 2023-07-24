@@ -25,6 +25,7 @@ export default function App() {
     closeDropDown,
     albums,
     selectAlbum,
+    deleteAlbum,
   } = useGallery();
 
   const onPressOpenGallery = () => {
@@ -65,6 +66,10 @@ export default function App() {
     closeDropDown();
   };
 
+  const onLongPressAlbum = (albumId) => {
+    deleteAlbum(albumId);
+  };
+
   const renderItem = ({ item: { id, uri }, index }) => {
     if (id === -1) {
       return (
@@ -91,6 +96,7 @@ export default function App() {
           isDropDownOpen={isDropDownOpen}
           onPressAddAlbum={onPressAddAlbum}
           onPressHeader={onPressHeader}
+          onLongPressAlbum={onLongPressAlbum}
           albums={albums}
           onPressAlbum={onPressAlbum}
           selectedAlbum={selectedAlbum}

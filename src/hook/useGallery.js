@@ -58,18 +58,42 @@ export const useGallery = () => {
   const closeDropDown = () => setIsDropDownOpen(false);
 
   const addAlbum = () => {
-    const lastId = images.length === 0 ? 0 : images[images.length - 1].id;
+    const lastId = albums.length === 0 ? 0 : albums[albums.length - 1].id;
     const newAlbum = {
       id: lastId + 1,
       title: albumTitle,
     };
 
     setAlbums([...albums, newAlbum]);
+    setSelectedAlbum(newAlbum);
   };
 
   const resetAlbumTitle = () => setAlbumTitle("");
   const selectAlbum = (album) => {
     setSelectedAlbum(album);
+  };
+
+  const deleteAlbum = (albumId) => {
+    if (albumId === defaultAlbum.id) {
+      Alert.alert("기본 앨범은 삭제할 수 없습니다.");
+      return;
+    }
+    Alert.alert("앨범을 삭제하시겠습니까?", "", [
+      {
+        style: "cancel",
+        text: "No",
+      },
+      {
+        text: "Yes",
+        onPress: () => {
+          const newAlbums = albums.filter((album) => album.id !== albumId);
+
+          setAlbums(newAlbums);
+          setSelectedAlbum(defaultAlbum);
+          closeDropDown();
+        },
+      },
+    ]);
   };
 
   const filteredImages = images.filter((image) => image.albumId === selectedAlbum.id);
@@ -98,5 +122,6 @@ export const useGallery = () => {
     closeDropDown,
     albums,
     selectAlbum,
+    deleteAlbum,
   };
 };
