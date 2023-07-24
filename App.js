@@ -3,6 +3,7 @@ import { useGallery } from "./src/hook/useGallery";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import MyDropDownPicker from "./src/components/MyDropDownPicker";
 import TextInputModal from "./src/components/TextInputModal";
+import ImageModal from "./src/components/ImageModal";
 
 const width = Dimensions.get("screen").width;
 const columnSize = width / 3;
@@ -13,9 +14,9 @@ export default function App() {
     pickImage,
     deleteImage,
     selectedAlbum,
-    modalVisible,
-    openModal,
-    closeModal,
+    textInputModalVisible,
+    openTextInputModal,
+    closeTextInputModal,
     albumTitle,
     setAlbumTitle,
     addAlbum,
@@ -26,6 +27,11 @@ export default function App() {
     albums,
     selectAlbum,
     deleteAlbum,
+    imageModalVisible,
+    openImageModal,
+    closeImageModal,
+    selectImage,
+    selectedImage,
   } = useGallery();
 
   const onPressOpenGallery = () => {
@@ -38,19 +44,19 @@ export default function App() {
 
   const onPressAddAlbum = () => {
     setAlbumTitle("");
-    openModal();
+    openTextInputModal();
   };
 
   const onSubmitEditing = () => {
     if (!albumTitle) return;
 
     addAlbum();
-    closeModal();
+    closeTextInputModal();
     resetAlbumTitle();
   };
 
-  const onPressBackDrop = () => {
-    closeModal();
+  const onPressTextInputModalBackDrop = () => {
+    closeTextInputModal();
   };
 
   const onPressHeader = () => {
@@ -70,7 +76,17 @@ export default function App() {
     deleteAlbum(albumId);
   };
 
-  const renderItem = ({ item: { id, uri }, index }) => {
+  const onPressImage = (image) => {
+    selectImage(image);
+    openImageModal();
+  };
+
+  const onPressImageModalBackDrop = () => {
+    closeImageModal();
+  };
+
+  const renderItem = ({ item: image, index }) => {
+    const { id, uri } = image;
     if (id === -1) {
       return (
         <TouchableOpacity
@@ -82,7 +98,7 @@ export default function App() {
       );
     } else {
       return (
-        <TouchableOpacity onLongPress={() => onLongPress(id)}>
+        <TouchableOpacity onPress={() => onPressImage(image)} onLongPress={() => onLongPress(id)}>
           <Image source={{ uri: uri }} style={{ width: columnSize, height: columnSize }} />
         </TouchableOpacity>
       );
@@ -102,12 +118,13 @@ export default function App() {
           selectedAlbum={selectedAlbum}
         />
         <TextInputModal
-          modalVisible={modalVisible}
+          textInputModalVisible={textInputModalVisible}
           albumTitle={albumTitle}
           setAlbumTitle={setAlbumTitle}
           onSubmitEditing={onSubmitEditing}
-          onPressBackDrop={onPressBackDrop}
+          onPressBackDrop={onPressTextInputModalBackDrop}
         />
+        <ImageModal imageModalVisible={imageModalVisible} onPressBackDrop={onPressImageModalBackDrop} selectedImage={selectedImage} />
         <FlatList data={imageWithAddButton} renderItem={renderItem} numColumns={3} style={{ zIndex: -1 }} />
       </SafeAreaView>
     </SafeAreaProvider>

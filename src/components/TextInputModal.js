@@ -1,19 +1,19 @@
 import { View, Text, Modal, TextInput, SafeAreaView, KeyboardAvoidingView, Platform, Pressable } from "react-native";
 import React, { useEffect, useRef } from "react";
 
-const TextInputModal = ({ modalVisible, albumTitle, setAlbumTitle, onSubmitEditing, onPressBackDrop }) => {
+const TextInputModal = ({ textInputModalVisible, albumTitle, setAlbumTitle, onSubmitEditing, onPressBackDrop }) => {
   const textInputFocusRef = useRef(null);
 
   useEffect(() => {
-    if (modalVisible) {
+    if (textInputModalVisible) {
       setTimeout(() => {
         textInputFocusRef.current?.focus();
       }, 100);
     }
-  }, [modalVisible]);
+  }, [textInputModalVisible]);
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+    <Modal animationType="slide" transparent={true} visible={textInputModalVisible}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         <Pressable onPress={onPressBackDrop} style={{ flex: 1 }}>
           <SafeAreaView style={{ width: "100%", position: "absolute", bottom: 0 }}>
