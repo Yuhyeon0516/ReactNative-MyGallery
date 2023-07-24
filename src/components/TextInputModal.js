@@ -10,24 +10,24 @@ const AlbumTitleTextInput = styled.TextInput`
   background-color: white;
 `;
 
+const Content = ({ onPressBackDrop, albumTitle, textInputFocusRef, setAlbumTitle, onSubmitEditing }) => {
+  return (
+    <Pressable onPress={onPressBackDrop} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, width: "100%", position: "absolute", bottom: 0 }}>
+        <AlbumTitleTextInput
+          placeholder="앨범명을 입력해주세요."
+          value={albumTitle}
+          ref={textInputFocusRef}
+          onChangeText={setAlbumTitle}
+          onSubmitEditing={onSubmitEditing}
+        />
+      </SafeAreaView>
+    </Pressable>
+  );
+};
+
 const TextInputModal = ({ textInputModalVisible, albumTitle, setAlbumTitle, onSubmitEditing, onPressBackDrop }) => {
   const textInputFocusRef = useRef(null);
-
-  const Content = () => {
-    return (
-      <Pressable onPress={onPressBackDrop} style={{ flex: 1 }}>
-        <SafeAreaView style={{ flex: 1, width: "100%", position: "absolute", bottom: 0 }}>
-          <AlbumTitleTextInput
-            placeholder="앨범명을 입력해주세요."
-            value={albumTitle}
-            ref={textInputFocusRef}
-            onChangeText={setAlbumTitle}
-            onSubmitEditing={onSubmitEditing}
-          />
-        </SafeAreaView>
-      </Pressable>
-    );
-  };
 
   useEffect(() => {
     if (textInputModalVisible) {
@@ -41,7 +41,13 @@ const TextInputModal = ({ textInputModalVisible, albumTitle, setAlbumTitle, onSu
     return (
       <Modal animationType="slide" transparent={true} visible={textInputModalVisible}>
         <KeyboardAvoidingView behavior={"padding"} style={{ flex: 1 }}>
-          <Content />
+          <Content
+            onPressBackDrop={onPressBackDrop}
+            albumTitle={albumTitle}
+            textInputFocusRef={textInputFocusRef}
+            setAlbumTitle={setAlbumTitle}
+            onSubmitEditing={onSubmitEditing}
+          />
         </KeyboardAvoidingView>
       </Modal>
     );
@@ -50,7 +56,13 @@ const TextInputModal = ({ textInputModalVisible, albumTitle, setAlbumTitle, onSu
   return (
     <KeyboardAvoidingView behavior={"height"}>
       <Modal animationType="slide" transparent={true} visible={textInputModalVisible}>
-        <Content />
+        <Content
+          onPressBackDrop={onPressBackDrop}
+          albumTitle={albumTitle}
+          textInputFocusRef={textInputFocusRef}
+          setAlbumTitle={setAlbumTitle}
+          onSubmitEditing={onSubmitEditing}
+        />
       </Modal>
     </KeyboardAvoidingView>
   );
