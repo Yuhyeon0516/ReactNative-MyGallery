@@ -13,22 +13,22 @@ const TextInputModal = ({ textInputModalVisible, albumTitle, setAlbumTitle, onSu
   }, [textInputModalVisible]);
 
   return (
-    <Modal animationType="slide" transparent={true} visible={textInputModalVisible}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <Modal animationType="slide" transparent={true} visible={textInputModalVisible}>
         <Pressable onPress={onPressBackDrop} style={{ flex: 1 }}>
-          <SafeAreaView style={{ width: "100%", position: "absolute", bottom: 0 }}>
+          <SafeAreaView style={{ flex: 1, width: "100%", position: "absolute", bottom: 0 }}>
             <TextInput
               placeholder="앨범명을 입력해주세요."
               value={albumTitle}
               ref={textInputFocusRef}
               onChangeText={setAlbumTitle}
               onSubmitEditing={onSubmitEditing}
-              style={{ width: "100%", padding: 10, borderWidth: 0.5, borderColor: "lightgrey" }}
+              style={{ width: "100%", padding: 10, borderWidth: 0.5, borderColor: "lightgrey", backgroundColor: "white" }}
             />
           </SafeAreaView>
         </Pressable>
-      </KeyboardAvoidingView>
-    </Modal>
+      </Modal>
+    </KeyboardAvoidingView>
   );
 };
 
