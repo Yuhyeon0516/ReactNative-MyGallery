@@ -8,7 +8,7 @@ const TextInputModal = ({ textInputModalVisible, albumTitle, setAlbumTitle, onSu
     if (textInputModalVisible) {
       setTimeout(() => {
         textInputFocusRef.current?.focus();
-      }, 100);
+      }, 500);
     }
   }, [textInputModalVisible]);
 

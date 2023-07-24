@@ -1,12 +1,10 @@
-import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import { useGallery } from "./src/hook/useGallery";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import MyDropDownPicker from "./src/components/MyDropDownPicker";
 import TextInputModal from "./src/components/TextInputModal";
 import ImageModal from "./src/components/ImageModal";
-
-const width = Dimensions.get("screen").width;
-const columnSize = width / 3;
+import ImageList from "./src/components/ImageList";
 
 export default function App() {
   const {
@@ -42,7 +40,7 @@ export default function App() {
     pickImage();
   };
 
-  const onLongPress = (imageId) => {
+  const onLongPressImage = (imageId) => {
     deleteImage(imageId);
   };
 
@@ -56,6 +54,7 @@ export default function App() {
 
     addAlbum();
     closeTextInputModal();
+    closeDropDown();
     resetAlbumTitle();
   };
 
@@ -97,26 +96,6 @@ export default function App() {
     moveToNextImage();
   };
 
-  const renderItem = ({ item: image, index }) => {
-    const { id, uri } = image;
-    if (id === -1) {
-      return (
-        <TouchableOpacity
-          onPress={onPressOpenGallery}
-          style={{ width: columnSize, height: columnSize, backgroundColor: "lightgrey", justifyContent: "center", alignItems: "center" }}
-        >
-          <Text style={{ fontWeight: "100", fontSize: 45 }}>+</Text>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <TouchableOpacity onPress={() => onPressImage(image)} onLongPress={() => onLongPress(id)}>
-          <Image source={{ uri: uri }} style={{ width: columnSize, height: columnSize }} />
-        </TouchableOpacity>
-      );
-    }
-  };
-
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -145,7 +124,12 @@ export default function App() {
           showNextArrow={showNextArrow}
           showPreviousArrow={showPreviousArrow}
         />
-        <FlatList data={imageWithAddButton} renderItem={renderItem} numColumns={3} style={{ zIndex: -1 }} />
+        <ImageList
+          onPressOpenGallery={onPressOpenGallery}
+          onPressImage={onPressImage}
+          imageWithAddButton={imageWithAddButton}
+          onLongPressImage={onLongPressImage}
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   );
